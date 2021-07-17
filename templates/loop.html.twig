@@ -1,0 +1,20 @@
+<h1>Training loop Twig</h1>
+
+
+{% for i in 10..9 %}
+    * {{ i }}
+{% endfor %}
+
+{% for letter in 'a'..'d' %}
+    * {{ letter }}
+{% endfor %}
+
+{% for letter in 'a'|upper..'b'|upper %}
+    * {{ letter }}
+{% endfor %}
+
+{% for i in 0..3 %}
+    {% if i == 1 %}
+        {{ dump(loop.parent) }}
+    {% endif %}
+{% endfor %}

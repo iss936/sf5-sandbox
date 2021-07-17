@@ -1,2 +1,7 @@
 twig:
+    paths:
+        'backend/templates': 'admin'
     default_path: '%kernel.project_dir%/templates'
+    # strict_variables: true by default if false no error when variables doesn't exist
+    
+    

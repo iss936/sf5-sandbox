@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sandbox index{% endblock %}
+
+{% block body %}
+    <h1>Sandbox index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sandbox in sandboxes %}
+            <tr>
+                <td>{{ sandbox.id }}</td>
+                <td>{{ sandbox.name }}</td>
+                <td>
+                    <a href="{{ path('sandbox_show', {'id': sandbox.id}) }}">show</a>
+                    <a href="{{ path('sandbox_edit', {'id': sandbox.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('sandbox_new') }}">Create new</a>
+{% endblock %}
