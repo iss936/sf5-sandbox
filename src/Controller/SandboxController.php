@@ -59,46 +59,29 @@ class SandboxController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="sandbox_show", methods={"GET"})
+     * @Route("/edition-form", name="app_edit_form")
      */
-    public function show(Sandbox $sandbox): Response
+    public function editSandbox(Request $request): Response
     {
-        return $this->render('sandbox/show.html.twig', [
-            'sandbox' => $sandbox,
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="sandbox_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Sandbox $sandbox): Response
-    {
-        $form = $this->createForm(SandboxType::class, $sandbox);
+        $form = $this->createForm(SandboxType::class, null);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('sandbox_index');
+            // $this->getDoctrine()->getManager()->flush();
+            die('ok');
+            return $this->redirectToRoute('app_index');
         }
+        // else{
+        //     dump($form->getErrors(true)); 
 
-        return $this->render('sandbox/edit.html.twig', [
-            'sandbox' => $sandbox,
+        //     foreach ($form->getErrors() as $oneError) {
+        //         dump($oneError);
+        //     }
+
+        //     die();
+        // }
+        return $this->render('sandbox/edit-sandbox.html.twig', [
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @Route("/{id}", name="sandbox_delete", methods={"POST"})
-     */
-    public function delete(Request $request, Sandbox $sandbox): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$sandbox->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($sandbox);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('sandbox_index');
     }
 }

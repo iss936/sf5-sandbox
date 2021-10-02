@@ -8,16 +8,15 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Sandbox;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Process\Process;
 
 class IndexController extends AbstractController
 {
     /**
      * @Route("/", name="app_index")
      */
-    public function indexAction($_format)
+    public function indexAction()
     {
-        dump($_format);
-        die();
         $sandbox = new Sandbox();
         $sandbox->setName('iss936');
 
