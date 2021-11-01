@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
-class IndexController extends AbstractController
+class SystemController extends AbstractController
 {
     /**
      * @Route("/system/filesystem", name="app_system_filesystem")
