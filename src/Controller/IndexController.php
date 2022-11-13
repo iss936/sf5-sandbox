@@ -2,7 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Incident;
+use App\Form\IncidentType;
+use App\Message\MailNotification;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Sandbox;
@@ -25,6 +32,35 @@ class IndexController extends AbstractController
             'sandbox' => $sandbox
         ]);
         // return $this->render('@admin/dashboard.html.twig');
+    }
+
+    /**
+     * @Route("/messenger-home", name="app_messenger_home")
+     */
+    public function messengerHomeAction(Request $request, EntityManagerInterface $em, MailerInterface $mailer): Response
+    {
+        $task = new Incident();
+        $task->setUser($this->getUser())
+             ->setCreatedAt(new \DateTime());
+
+        $form = $this->createForm(IncidentType::class, $task);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $task = $form->getData();
+
+            $em->persist($task);
+            $em->flush();
+
+            $this->dispatchMessage(new MailNotification($task->getDescription(), $task->getId(), $task->getUser()->getEmail()));
+
+            return $this->redirectToRoute('app_index');
+        }
+
+        return $this->render('home-messenger.html.twig', [
+            'form' => $form->createView(),
+            'controller_name' => 'HomeController',
+        ]);
     }
 
     /**
